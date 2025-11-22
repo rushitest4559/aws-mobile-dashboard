@@ -5,7 +5,7 @@ import { InstancesPage } from "./pages/instances";
 function Home() {
   return (
     <div className="pt-14">
-      <h1 className="text-3xl font-bold underline">घर (Home Page)</h1>
+      <h1 className="text-3xl font-bold underline">घर (Home Page), login feature</h1>
     </div>
   );
 }
