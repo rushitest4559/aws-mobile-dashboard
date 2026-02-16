@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { FaDatabase, FaBars, FaTimes, FaLayerGroup } from "react-icons/fa";
 import { Link, useLocation } from "react-router-dom";
+import { useMsal } from "@azure/msal-react";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const location = useLocation();
+  const { instance } = useMsal();
 
   const navLinks = [
     { name: "Storage Assets", path: "/storage", icon: <FaDatabase /> },
@@ -12,12 +14,18 @@ export default function Navbar() {
 
   const isActive = (path) => location.pathname === path;
 
+  const handleLogout = () => {
+    sessionStorage.clear();
+    localStorage.clear();
+    instance.logoutRedirect();
+  };
+
   return (
     <nav className="fixed top-0 w-full z-50 bg-white/70 backdrop-blur-xl border-b border-gray-100">
       <div className="max-w-7xl mx-auto px-6 lg:px-10">
         <div className="flex justify-between items-center h-16">
           
-          {/* BRAND LOGO - Abstract Geometric */}
+          {/* BRAND LOGO */}
           <Link to="/" className="flex items-center gap-2 group" onClick={() => setOpen(false)}>
             <div className="relative h-8 w-8 bg-gradient-to-tr from-blue-700 to-indigo-500 rounded-lg flex items-center justify-center shadow-md group-hover:rotate-12 transition-transform duration-300">
                <FaLayerGroup className="text-white text-xs" />
@@ -50,6 +58,12 @@ export default function Navbar() {
             <button className="bg-gray-900 text-white text-[10px] font-black px-4 py-2 rounded-full uppercase tracking-widest hover:bg-blue-600 transition-colors">
               Refresh All
             </button>
+            <button
+              onClick={handleLogout}
+              className="bg-red-600 text-white text-[10px] font-black px-4 py-2 rounded-full uppercase tracking-widest hover:bg-red-800 transition-colors"
+            >
+              Logout
+            </button>
           </div>
 
           {/* MOBILE TOGGLE */}
@@ -77,6 +91,12 @@ export default function Navbar() {
               {link.icon} {link.name}
             </Link>
           ))}
+          <button
+            onClick={handleLogout}
+            className="w-full text-red-600 text-xs font-black uppercase tracking-widest"
+          >
+            Logout
+          </button>
         </div>
       </div>
     </nav>
